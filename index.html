@@ -38,6 +38,8 @@
   <div id="resultado">Aguardando leitura...</div>
 
   <script>
+    const APP_URL = 'https://script.google.com/macros/s/AKfycby8iaXZj20uShXqsRIMTrufzJmaHxSfYuGWLIG2AUYm_7QDrpxzkeBKRaO6TIVWx7QKWA/exec';
+
     const leitor = new Html5Qrcode("reader");
     let processando = false;
 
@@ -45,19 +47,17 @@
       { facingMode: "environment" },
       { fps: 10, qrbox: 250 },
 
-      async function(codigo) {
+      function(codigo) {
         if (processando) return;
-        processando = true;
 
+        processando = true;
         leitor.pause(true);
 
         document.getElementById("resultado").innerText =
-          "QR Code identificado!";
+          "QR Code identificado! Abrindo confirmação...";
 
-        // O código será encaminhado para validação
-        // na área administrativa protegida.
-        document.getElementById("resultado").innerText =
-          "Código lido com sucesso: " + codigo;
+        window.location.href =
+          APP_URL + "?token=" + encodeURIComponent(codigo);
       },
 
       function() {}
