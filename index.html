@@ -1,1 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leitor QR Code</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
 
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f4ef;
+      text-align: center;
+      padding: 25px 15px;
+      color: #80643e;
+    }
+
+    h1 { font-size: 28px; }
+
+    #reader {
+      max-width: 400px;
+      margin: 25px auto;
+    }
+
+    #resultado {
+      color: #333;
+      font-size: 18px;
+      margin: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Check-in do Casamento</h1>
+  <p>Leitor de QR Code dos convidados</p>
+
+  <div id="reader"></div>
+  <div id="resultado">Aguardando leitura...</div>
+
+  <script>
+    const leitor = new Html5Qrcode("reader");
+    let processando = false;
+
+    leitor.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: 250 },
+
+      async function(codigo) {
+        if (processando) return;
+        processando = true;
+
+        leitor.pause(true);
+
+        document.getElementById("resultado").innerText =
+          "QR Code identificado!";
+
+        // O código será encaminhado para validação
+        // na área administrativa protegida.
+        document.getElementById("resultado").innerText =
+          "Código lido com sucesso: " + codigo;
+      },
+
+      function() {}
+    ).catch(function(erro) {
+      document.getElementById("resultado").innerText =
+        "Não foi possível abrir a câmera. Verifique as permissões.";
+    });
+  </script>
+</body>
+</html>
